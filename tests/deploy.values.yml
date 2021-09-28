@@ -1,0 +1,117 @@
+
+# this file is intended to to test as much deployment functionality as possible
+
+default:
+  name: "helmet-deploy"
+  version: "2020-01-01-01"
+  image: "some.registry.example.com/helmspace/helmet-deploy:2020-01-01-01"
+  slug: ''
+  env: production
+  domain: example.com
+  issuer:
+    production: production
+    staging: staging
+  ingress:
+    external: external
+    internal: internal
+  registries:
+  - registry-one
+  - registry-two
+  add:
+    logs:
+      json:
+        polymatic.systems/json: "false"
+    metrics:
+      enable:
+        polymatic.systems/scrape: "true"
+      disable:
+        polymatic.systems/scrape: "false"
+    mesh:
+      enable:
+        polymatic.systems/inject: enabled
+      disable:
+        polymatic.systems/inject: disabled
+
+add:
+  logs: json
+  metrics: enable
+  mesh: disable
+
+volumes:
+- name: data
+  path: /data
+  pvc:
+    class: pg1
+    size: 10Gi
+
+variables:
+- name: config
+  store: plaintext
+  data:
+    TEST_SECRET: "${TEST_SECRET}"
+- name: secret
+  store: encrypted
+  data:
+    TEST_CONFIG: "${TEST_CONFIG}"
+
+containers:
+- name: app
+  ports:
+    - containerPort: 5050
+    - containerPort: 8080
+  cpu:
+    request: 100m
+    limit: 1000m
+  memory:
+    request: 100Mi
+    limit: 1Gi
+  probe:
+    path: /health
+    port: 8080
+  root: true
+
+annotations:
+  random: "value"
+
+nodes:
+  prohibit:
+    preemptive: 'true'
+
+strategy: Recreate
+
+svc:
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+  - name: metrics
+    port: 5050
+    targetPort: 5050
+
+hpa:
+  min: 2
+  max: 3
+  cpu: 60
+  memory: 90
+
+conceal: true
+
+ingress:
+- name: public
+  internal: false
+  issuer: ""
+  urls:
+    - ingress.test.site
+    - ingress2.test.site
+- name: private
+  internal: true
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 5000m
+  issuer: letsencrypt-staging
+  port: 3000
+  urls:
+    - internal.ingress.test.site
+- name: extra
+  cert: "a-differenct-cert-secret"
+  urls:
+    - extra.test.site
