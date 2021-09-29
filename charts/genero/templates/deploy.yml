@@ -1,6 +1,5 @@
 {{- $default := .Values.default -}}
-{{- $config := .Values.config -}}
-{{- $secret := .Values.secret -}}
+{{- $variables := .Values.variables -}}
 {{- $volumes := .Values.volumes -}}
 {{- $deploy := .Values.deploy | default dict }}
 {{- if and .Values.containers (not .Values.cronjobs) }}
@@ -111,17 +110,18 @@ spec:
           runAsUser: 0
         {{- end }}
           privileged: {{ ternary "true" "false" (.privileged | default false) }}
-        {{- if or $config $secret }}
+        {{- if $variables }}
         envFrom:
-          {{- range $config }}
+          {{- range $variables }}
+            {{- if eq (.store | default "") "plaintext" }}
           - configMapRef:
               name: {{ include "name" $ }}-{{ .name }}
               optional: false
-          {{- end }}
-          {{- range $secret }}
+            {{- else }}
           - secretRef:
               name: {{ include "name" $ }}-{{ .name }}
               optional: false
+            {{- end }}
           {{- end }}
         {{- end }}
       {{- end }}
@@ -188,17 +188,18 @@ spec:
           runAsUser: 0
         {{- end }}
           privileged: {{ ternary "true" "false" (.privileged | default false) }}
-        {{- if or $config $secret }}
+        {{- if or $variables }}
         envFrom:
-          {{- range $config }}
+          {{- range $variables }}
+            {{- if eq (.store | default "") "plaintext" }}
           - configMapRef:
               name: {{ include "name" $ }}-{{ .name }}
               optional: false
-          {{- end }}
-          {{- range $secret }}
+            {{- else }}
           - secretRef:
               name: {{ include "name" $ }}-{{ .name }}
               optional: false
+            {{- end }}
           {{- end }}
         {{- end }}
         {{- if $volumes }}

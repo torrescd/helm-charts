@@ -14,18 +14,17 @@ default:
 
 volumes:
 - name: cv
-  path: /app/.env
+  path: /app
   file: .env
   data:
     .env: |
       SERVER_PORT: 3000
 
-config:
+variables:
 - name: config
+  store: plaintext
   data:
     TEST_SECRET: "${TEST_SECRET}"
-
-secret:
 - name: secret
   data:
     TEST_CONFIG: "${TEST_CONFIG}"

@@ -151,17 +151,18 @@ spec:
               runAsUser: 0
             {{- end }}
               privileged: {{ if $cntr.privileged }}{{ "true" }}{{ else }}{{ "false "}}{{ end }}
-            {{- if or $v.config $v.secret }}
+            {{- if $v.variables }}
             envFrom:
-              {{- range $v.config }}
+              {{- range $v.variables }}
+                {{- if eq (.store | default "") "plaintext" }}
               - configMapRef:
                   name: {{ include "name" $ }}-{{ .name }}
                   optional: false
-              {{- end }}
-              {{- range $v.secret }}
+                {{- else }}
               - secretRef:
                   name: {{ include "name" $ }}-{{ .name }}
                   optional: false
+                {{- end }}
               {{- end }}
             {{- end }}
             {{- if $v.volumes }}

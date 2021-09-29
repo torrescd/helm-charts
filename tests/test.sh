@@ -18,7 +18,7 @@ if [[ -n "$1" ]]; then
   
   trap "rm values.yml; exit 0;" HUP INT QUIT ABRT TERM ERR
 
-  helm upgrade ${1} ../app \
+  helm upgrade ${1} ../charts/genero  \
     --namespace helmspace \
     --values values.yml \
     --dry-run --install;
@@ -31,11 +31,11 @@ else
 
     trap "rm values.yml; exit 0;" HUP INT QUIT ABRT TERM ERR
 
-    # helm template test ../app \
+    # helm template test ../charts/genero  \
     #   --namespace helmspace \
     #   --values values.yml --validate
     
-    helm upgrade ${filename%%.*} ../app \
+    helm upgrade ${filename%%.*} ../charts/genero  \
       --namespace helmspace \
       --values values.yml \
       --dry-run --install;

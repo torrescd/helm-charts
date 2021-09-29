@@ -12,7 +12,7 @@ default:
 name: helmet
 version: "2020"
 
-config:
+variables:
 - name: configuration
   data:
     TEST: data
