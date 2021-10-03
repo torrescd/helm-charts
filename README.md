@@ -21,6 +21,10 @@ helm repo update
 
 ## Usage
 
+For a full explanation on both using Genero for pipelines and standalone deployments, read the blog here: 
+
+https://blog.polymatic.systems/genero-3f788f2167a7
+
 ### sample values file
 
 A simple Genero values file looks like this (what a dev would store in their app repo):
