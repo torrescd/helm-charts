@@ -8,7 +8,7 @@ Environment variables are passed to the containers using config maps and secrets
 
 variables:
 - name: 
-  store: encrypted ('plaintext', 'encrypted')
+  store: encrypted ('plaintext', 'external', 'encrypted')
   data:
 ```
 
@@ -17,6 +17,6 @@ variables:
 
 variables:
 - name: an arbitrary name
-  store: if 'plaintext', variables are stored as a configmap, otherwise, they are stored as a secret
+  store: 'plaintext' -> configmap, 'external' -> name of premade secret, anything else -> secret
   data: a map of environment variables and values
 ```

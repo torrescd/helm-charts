@@ -45,12 +45,13 @@ volumes:
     size: 10Gi
 
 variables:
+- name: premade-secret-name
+  store: external
 - name: config
   store: plaintext
   data:
     TEST_SECRET: "${TEST_SECRET}"
 - name: secret
-  store: encrypted
   data:
     TEST_CONFIG: "${TEST_CONFIG}"
 
