@@ -8,6 +8,7 @@ metadata:
 data:
   {{- toYaml .data | nindent 2 }}
 ---
+{{- else if eq (.store | default "") "external" }}
 {{- else }}
 apiVersion: v1
 kind: Secret

@@ -328,7 +328,8 @@
             "type": "string"
           },
           "store": {
-            "type": "string"
+            "type": "string",
+            "enum": ["encrypted", "plaintext", "external"]
           },
           "data": {
             "type": "object"
