@@ -132,16 +132,28 @@ spec:
             {{- if $cntr.probe }}{{ if eq $cntr.probe.path "disable" }}{{- end }}
             {{- else }}
             readinessProbe:
+              {{- if (dig "probe" "exec" "" $cntr) }}
+              exec:
+                command:
+                  {{- toYaml .probe.exec | nindent 16 }}
+              {{- else }}
               httpGet:
                 path: {{ dig "probe" "path" "/health" $cntr }}
                 port: {{ dig "probe" "port" 80 $cntr }}
+              {{- end }}
               initialDelaySeconds: 10
               periodSeconds: 30
               failureThreshold: 4
             livenessProbe:
+              {{- if (dig "probe" "exec" "" $cntr) }}
+              exec:
+                command:
+                  {{- toYaml .probe.exec | nindent 16 }}
+              {{- else }}
               httpGet:
                 path: {{ dig "probe" "path" "/health" $cntr }}
                 port: {{ dig "probe" "port" 80 $cntr }}
+              {{- end }}
               initialDelaySeconds: 10
               periodSeconds: 30
               failureThreshold: 4
