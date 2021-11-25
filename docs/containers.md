@@ -23,6 +23,7 @@ containers:
   probe:
     path: '/health'
     port: 80
+    exec:
     delay:  30
     startup: 20
   root: false
@@ -52,6 +53,7 @@ containers: an array of containers to launch
   probe:
     path: the server path to ping for health checks, set to "disable" to disable checks
     port: the server port to ping for health checks
+    exec: an array of strings that run a command on the container instead of checking an http endpoint
     delay: number of seconds to wait before liveliness and readiness probes start
     startup: number of failed startup checks before restarting, checks start after 10 seconds and happen every 6 seconds
   root: run the image as root

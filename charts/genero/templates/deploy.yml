@@ -162,23 +162,41 @@ spec:
             memory: {{ dig "memory" "request" "1Gi" . }}
         {{- if not (eq (dig "probe" "path" "" .) "disable") }}
         readinessProbe:
+          {{- if (dig "probe" "exec" "" .) }}
+          exec:
+            command:
+              {{- toYaml .probe.exec | nindent 12 }}
+          {{- else }}
           httpGet:
             path: {{ dig "probe" "path" "/health" . }}
             port: {{ dig "probe" "port" 80 . }}
+          {{- end }}
           initialDelaySeconds: {{ dig "probe" "delay" 30 . }}
           periodSeconds: 30
           failureThreshold: 4
         livenessProbe:
+          {{- if (dig "probe" "exec" "" .) }}
+          exec:
+            command:
+              {{- toYaml .probe.exec | nindent 12 }}
+          {{- else }}
           httpGet:
             path: {{ dig "probe" "path" "/health" . }}
             port: {{ dig "probe" "port" 80 . }}
+          {{- end }}
           initialDelaySeconds: {{ dig "probe" "delay" 30 . }}
           periodSeconds: 30
           failureThreshold: 4
         startupProbe:
+          {{- if (dig "probe" "exec" "" .) }}
+          exec:
+            command:
+              {{- toYaml .probe.exec | nindent 12 }}
+          {{- else }}
           httpGet:
             path: {{ dig "probe" "path" "/health" . }}
             port: {{ dig "probe" "port" 80 . }}
+          {{- end }}
           initialDelaySeconds: 10
           failureThreshold: {{ dig "probe" "startup" 20 . }}
           periodSeconds: 6

@@ -40,6 +40,9 @@ containers:
     request: 100Mi
     limit: 1Gi
   probe:
+    exec:
+      - 'sleep'
+      - '1'
     path: /health
     port: 5000
   disableRoot: true

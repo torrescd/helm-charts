@@ -173,6 +173,9 @@
           "probe": {
             "type": "object",
             "properties": {
+              "exec": {
+                "type": "array"
+              },
               "path": {
                 "type": "string"
               },
