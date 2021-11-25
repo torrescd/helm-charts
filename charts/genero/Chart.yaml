@@ -1,7 +1,7 @@
 apiVersion: v2
 name: genero
-version: v1.1.0
-appVersion: v1.1.0
+version: v1.2.0
+appVersion: v1.2.0
 description: Genero, a generic best practice ci/cd helm chart
 home: https://polymatic.systems
 keywords:
