@@ -354,6 +354,10 @@
           "path": {
             "type": "string"
           },
+          "perpetual": {
+            "type": "string",
+            "enum": ["enable", "disable"]
+          },
           "file": {
             "type": "string"
           },
