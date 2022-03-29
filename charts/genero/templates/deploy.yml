@@ -141,17 +141,13 @@ spec:
         {{- else }}
           - containerPort: 80
         {{- end }}
-        {{- if .command }}
+        {{- if .args }}
         args:
-          {{- toYaml .command | nindent 8 }}
+          {{- toYaml .args | nindent 8 }}
         {{- end }}
-        {{- if .entrypoint }}
+        {{- if .command }}
         command:
-          {{- toYaml .entrypoint | nindent 8 }}
-        {{- else if .command }}
-        command:
-          - "/bin/sh"
-          - "-c"
+          {{- toYaml .command | nindent 8 }}
         {{- end }}
         resources:
           requests:
